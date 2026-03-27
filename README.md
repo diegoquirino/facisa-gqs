@@ -4,7 +4,7 @@
 
 | | | | |
 |---|---|---|---|
-| **1. Curso** | Bacharelado em Sistemas de Informação | | |
+| **1. Curso** | Análise de Sistemas | | |
 | **2. Competência** | Gestão da Qualidade de Software | **CH** | 60h |
 | **2.1 Projeto** | Projeto de Sistema de Gestão da Qualidade para Software Empresarial | | |
 | **3. Ano/Semestre/Módulo** | | **Código** | |
