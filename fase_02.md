@@ -158,7 +158,7 @@ A integração contínua, prática moderna de desenvolvimento, automatiza o test
 
 #### 2.4.3. Teste de Sistema
 
-O teste de sistema valida o comportamento do sistema completo e integrado em relação aos requisitos especificados. Este nível de teste adota uma perspectiva de caixa-preta, tratando o sistema como uma entidade única sem considerar sua estrutura interna [1], [4].
+O teste de sistema verifica o comportamento do sistema completo e integrado em relação aos requisitos especificados. Este nível de teste adota uma perspectiva de caixa-preta, tratando o sistema como uma entidade única sem considerar sua estrutura interna [1], [4].
 
 O teste de sistema abrange tanto requisitos funcionais quanto não funcionais, incluindo funcionalidade, desempenho, segurança, usabilidade, confiabilidade e compatibilidade [2], [8]. Diferentes tipos de teste de sistema são conduzidos para avaliar aspectos específicos da qualidade.
 
