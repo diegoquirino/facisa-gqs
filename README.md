@@ -109,12 +109,3 @@ MOLINARI, Leonardo. **Testes de software: produzindo sistemas melhores e mais co
 **Google Acadêmico** - Pesquisa de artigos científicos. Disponível em: https://scholar.google.com.br/?hl=pt
 
 **Portal Brasileiro de Dados Abertos** - Dados sobre qualidade de software. Disponível em: https://dados.gov.br/
-
----
-
-**Observações:**
-
-- Este plano de ensino está alinhado com as Diretrizes Curriculares Nacionais para os cursos de Bacharelado em Sistemas de Informação.
-- As referências bibliográficas seguem rigorosamente as normas da ABNT (NBR 6023:2018).
-- O curso enfatiza práticas manuais de qualidade de software, preparando profissionais para atividades cotidianas de QA.
-- O plano poderá sofrer ajustes ao longo do semestre, conforme necessidades pedagógicas identificadas.
