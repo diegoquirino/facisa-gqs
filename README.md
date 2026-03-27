@@ -2,7 +2,7 @@
 
 ## 1 - DADOS DE IDENTIFICAÇÃO
 
-|||||
+| | | | |
 |---|---|---|---|
 | **1. Curso** | Análise de Sistemas | | |
 | **2. Competência** | Gestão da Qualidade de Software | **CH** | 60h |
