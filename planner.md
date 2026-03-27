@@ -1,6 +1,6 @@
 # PLANNER - Gestão da Qualidade de Software
 
-## Bacharelado em Sistemas de Informação
+## Análise de Sistemas
 
 ---
 
@@ -108,7 +108,7 @@ Este planner está alinhado com as Diretrizes Curriculares Nacionais para os cur
 
 **Instituição:** UniFacisa - Centro Universitário
 
-**Curso:** Bacharelado em Sistemas de Informação
+**Curso:** Análise de Sistemas
 
 **Disciplina:** Gestão da Qualidade de Software
 
