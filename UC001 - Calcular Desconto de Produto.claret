@@ -1,0 +1,72 @@
+systemName "Calculadora de Descontos"
+
+usecase "UC001 - Calcular Desconto de Produto" {
+    version "1.1" type "Update" user "Diego Quirino" date "08/08/2025"
+    
+    actor usuario "Usuário do Sistema"
+    
+    preCondition "O sistema está disponível e existem produtos cadastrados"
+    
+    basic {
+        step 1 usuario "acessa a calculadora de descontos"
+        step 2 system "apresenta página inicial com opção 'Calcular Desconto'"
+        step 3 usuario "clica em 'Calcular Desconto'"
+        step 4 system "redireciona para a listagem de produtos (/produtos)"
+        step 5 usuario "visualiza tabela com produtos cadastrados: Código, Nome, Valor e Ações"
+        step 6 system "exibe ícones de ação para cada produto: $ (calcular), ↺ (editar), ✗ (excluir)"
+        step 7 usuario "clica no ícone '$' (calcular desconto) do produto desejado"
+        step 8 system "redireciona para formulário de cálculo"
+        step 9 usuario "visualiza dados do produto preenchidos automaticamente"
+        step 10 system "apresenta seção 'Dados do Produto' com código, nome e valor preenchidos"
+        step 11 usuario "visualiza formulário de informações complementares"
+        step 12 system "apresenta campos: Tipo de Cliente e Quantidade"
+        step 13 usuario "seleciona tipo de cliente se desejar alterar" af[1,2,3]
+        step 14 system "apresenta o tipo de cliente selecionado"
+        step 15 usuario "informa a quantidade de produtos" af[4,5,6]
+        step 16 system "apresenta a quantidade informada"
+        step 17 usuario "clica no botão 'Calcular Desconto!'"
+        step 18 system "processa o cálculo do desconto baseado no tipo de cliente e quantidade" ef[1]
+        step 19 usuario "é redirecionado para página de resultado"
+        step 20 system "exibe mensagem 'Valor do desconto calculado com sucesso!' (MSG001)"
+        step 21 usuario "visualiza resultado do cálculo com todos os detalhes"
+        step 22 system "apresenta: tipo de cliente, quantidade, fator de desconto e valor final"
+        step 23 usuario "visualiza dados originais do produto para conferência"
+        step 24 system "exibe botão 'Realizar Novo Cálculo'"
+    }
+    
+    alternative 1 "Cliente tipo A mantido" {
+        step 1 usuario "mantém seleção padrão do tipo de cliente A" bs 14
+    }
+    
+    alternative 2 "Cliente tipo B selecionado" {
+        step 1 usuario "altera para tipo de cliente B" bs 14
+    }
+    
+    alternative 3 "Cliente tipo C selecionado" {
+        step 1 usuario "altera para tipo de cliente C" bs 14
+    }
+    
+    alternative 4 "Quantidade menor que 100 unidades" {
+        step 1 usuario "informa a quantidade de produtos menor que 100 unidades"
+        step 2 system "aplica fator de desconto para quantidade < 100: Cliente A (0,90), B (0,85), C (0,80)"
+        step 3 usuario "clica no botão 'Calcular Desconto!'" bs 18
+    }
+    
+    alternative 5 "Quantidade entre 100 e 999 unidades" {
+        step 1 usuario "informa a quantidade de produtos entre 100 e 999 unidades"
+        step 2 system "aplica fator de desconto para 100 <= quantidade < 1000: Cliente A (0,95), B (0,90), C (0,85)"
+        step 3 usuario "clica no botão 'Calcular Desconto!'" bs 18
+    }
+    
+    alternative 6 "Quantidade igual ou maior que 1000 unidades" {
+        step 1 usuario "informa a quantidade de produtos igual ou maior que 1000 unidades"
+        step 2 system "aplica fator de desconto para quantidade >= 1000: Cliente A (1,00), B (0,95), C (0,90)"
+        step 3 usuario "clica no botão 'Calcular Desconto!'" bs 18
+    }
+    
+    exception 1 "Quantidade menor ou igual a zero" {
+        step 4 system "exibe mensagem 'A quantidade informada deve ser maior ou igual a 01 (um)!' (MSG002)"
+    }
+    
+    postCondition "Usuário visualiza o desconto calculado com todos os detalhes e pode realizar novo cálculo"
+}
