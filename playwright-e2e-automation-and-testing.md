@@ -192,7 +192,6 @@ A atividade deve considerar o requisito `UC001 - Calcular Desconto de Produto` c
 | `pages/DiscountFormPage.ts` | Preencher cliente e quantidade, além de submeter o formulário |
 | `pages/DiscountResultPage.ts` | Validar mensagens e campos da tela de resultado |
 | `tests/calcular-desconto.spec.ts` | Implementar os 12 cenários com comentários AAA |
-| `tests/data/descontos.ts` | Opcionalmente centralizar a massa de dados dos casos |
 
 ### 12.3 Versão melhorada do código com Page Object Model
 
