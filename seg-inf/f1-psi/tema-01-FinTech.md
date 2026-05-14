@@ -1,4 +1,4 @@
-# Sistema 01 — Fintech
+# Sistema 01 — FinTech
 
 ---
 
