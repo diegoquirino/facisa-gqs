@@ -1,6 +1,4 @@
-# Disciplina: Segurança da Informação | Trabalho Prático — Descritivo do Sistema | Sistema 06 — IoT Industrial / OT (Tecnologia Operacional)
-
----
+# Sistema 06 — IoT Industrial / OT (Tecnologia Operacional)
 
 ---
 
