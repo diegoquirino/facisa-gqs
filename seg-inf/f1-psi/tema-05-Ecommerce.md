@@ -1,6 +1,4 @@
-# Disciplina: Segurança da Informação | Trabalho Prático — Descritivo do Sistema | Sistema 05 — E-commerce / Marketplace
-
----
+# Sistema 05 — E-commerce / Marketplace
 
 ---
 
