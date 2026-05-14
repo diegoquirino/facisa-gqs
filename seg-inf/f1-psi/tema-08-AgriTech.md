@@ -1,6 +1,4 @@
-# Disciplina: Segurança da Informação | Trabalho Prático — Descritivo do Sistema | Sistema 08 — AgriTech
-
----
+# Sistema 08 — AgriTech
 
 ---
 
