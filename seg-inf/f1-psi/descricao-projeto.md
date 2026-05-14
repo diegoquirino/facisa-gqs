@@ -22,52 +22,52 @@ O PROJETO DA FASE 1 consiste no desenvolvimento de uma **Política de Segurança
 
 Cada grupo será sorteado para **UM** dos seguintes sistemas fictícios (e deverá ler a descrição completa do mesmo, seguindo o link acoplado ao nome do sistema):
 
-1. [**Fintech — PayFlowBR**](./tema-01_fintech.md)
+1. [**Fintech — PayFlowBR**](./tema-01-FinTech.md)
    - Pagamentos digitais e microcrédito
    - 2,5 milhões de usuários
    - Desafios: Banco Central, LGPD, PCI DSS, Open Finance
 
-2. **HealthTech — MediConnect**
+2. [**HealthTech — MediConnect**](./tema-02-HealthTech.md)
    - Prontuário eletrônico e telemedicina
    - 5 milhões de pacientes
    - Desafios: Dados sensíveis de saúde, CFM, ANS, LGPD
 
-3. **GovTech — CidadãoDigital**
+3. [**GovTech — CidadãoDigital**](./tema-03-GovTech.md)
    - Portal de serviços públicos municipais
    - 8 milhões de cidadãos
    - Desafios: LAI, Dados Abertos, LGPD setor público
 
-4. **EdTech — EduVerso**
+4. [**EdTech — EduVerso**](./tema-04-EdTech.md)
    - Plataforma de ensino a distância
    - 3 milhões de alunos
    - Desafios: Dados de menores, MEC, proctoring, LGPD
 
-5. **E-commerce — MercadoBrasil**
+5. [**E-commerce — MercadoBrasil**](./tema-05-Ecommerce.md)
    - Marketplace multi-vendedor
    - 20 milhões de clientes
    - Desafios: CDC, PCI DSS, fraudes, LGPD
 
-6. **IoT Industrial/OT — SmartFactory**
+6. [**IoT Industrial/OT — SmartFactory**](./tema-06-IoT.md)
    - Automação de manufatura
    - 80 plantas industriais
    - Desafios: IEC 62443, MITRE ATT&CK ICS, NRs
 
-7. **LegalTech — JurisCloud**
+7. [**LegalTech — JurisCloud**](./tema-07-LegalTech.md)
    - Gestão de processos jurídicos
    - 50 mil advogados
    - Desafios: Sigilo profissional, OAB, dados sensíveis
 
-8. **AgriTech — AgroConnect**
+8. [**AgriTech — AgroConnect**](./tema-08-AgriTech.md)
    - Monitoramento de lavouras e cadeia de suprimentos
    - 5 mil produtores rurais
    - Desafios: MAPA, CAR, IoT, rastreabilidade
 
-9. **HRTech — RHSmart**
+9. [**HRTech — RHSmart**](./tema-09-RHTech.md)
    - Gestão de RH e folha de pagamento
    - 500 mil funcionários gerenciados
    - Desafios: CLT, eSocial, dados sensíveis (saúde, biometria)
 
-10. **Smart City/Mobilidade — MobiliCidade**
+10. [**Smart City/Mobilidade — MobiliCidade**](./tema-10-SmartCity.md)
     - Transporte público inteligente
     - 10 milhões de usuários
     - Desafios: Mobilidade urbana, geolocalização, benefícios sociais
