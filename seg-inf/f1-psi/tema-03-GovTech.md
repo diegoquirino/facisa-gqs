@@ -1,6 +1,4 @@
-# Disciplina: Segurança da Informação | Trabalho Prático — Descritivo do Sistema | Sistema 03 — GovTech
-
----
+# Sistema 03 — GovTech
 
 ---
 
