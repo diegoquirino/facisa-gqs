@@ -1,6 +1,4 @@
-# Disciplina: Segurança da Informação | Trabalho Prático — Descritivo do Sistema | Sistema 10 — Smart City / Mobilidade Urbana
-
----
+# Sistema 10 — Smart City / Mobilidade Urbana
 
 ---
 
