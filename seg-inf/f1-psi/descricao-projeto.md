@@ -22,7 +22,7 @@ O PROJETO DA FASE 1 consiste no desenvolvimento de uma **Política de Segurança
 
 Cada grupo será sorteado para **UM** dos seguintes sistemas fictícios (e deverá ler a descrição completa do mesmo, seguindo o link acoplado ao nome do sistema):
 
-1. **Fintech — PayFlowBR**
+1. [**Fintech — PayFlowBR**](./tema-01_fintech.md)
    - Pagamentos digitais e microcrédito
    - 2,5 milhões de usuários
    - Desafios: Banco Central, LGPD, PCI DSS, Open Finance
