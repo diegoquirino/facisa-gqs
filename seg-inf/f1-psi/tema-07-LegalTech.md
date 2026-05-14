@@ -1,6 +1,4 @@
-# Disciplina: Segurança da Informação | Trabalho Prático — Descritivo do Sistema | Sistema 07 — LegalTech
-
----
+# Sistema 07 — LegalTech
 
 ---
 
