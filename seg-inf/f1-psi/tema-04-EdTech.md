@@ -1,6 +1,4 @@
-# Disciplina: Segurança da Informação | Trabalho Prático — Descritivo do Sistema | Sistema 04 — EdTech
-
----
+# Sistema 04 — EdTech
 
 ---
 
