@@ -1,6 +1,4 @@
-# Disciplina: Segurança da Informação | Trabalho Prático — Descritivo do Sistema | Sistema 09 — HRTech
-
----
+# Sistema 09 — RHTech
 
 ---
 
