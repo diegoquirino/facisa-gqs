@@ -30,7 +30,7 @@ Os objetivos específicos incluem:
 - **Finalidade Acadêmica:** As demonstrações e o relatório têm finalidade **exclusivamente acadêmica e educativa**.
 - **Responsabilidade:** O uso irresponsável de ferramentas de segurança ou a violação destas regras éticas poderá acarretar em penalidades acadêmicas e, dependendo da gravidade, sanções legais.
 
-## Explorações de Vulnerabilidades Sugeridas
+## Explorações de Vulnerabilidades
 
 Cada equipe deverá trabalhar com **uma** das vulnerabilidades listadas abaixo, conforme definição ou sorteio prévio pelo professor. As simulações devem focar na compreensão do mecanismo da vulnerabilidade e nas formas de defesa.
 
