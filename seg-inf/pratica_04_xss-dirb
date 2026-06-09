@@ -1,0 +1,142 @@
+# Guia Prático: Exploração de XSS (Cross-Site Scripting) e Enumeração de Diretórios com DIRB
+
+---
+
+## 1. Introdução
+
+Este guia prático tem como objetivo demonstrar, em um ambiente de laboratório controlado, como identificar e explorar vulnerabilidades de **Cross-Site Scripting (XSS)** e como utilizar a ferramenta **DIRB** para realizar a enumeração de diretórios e arquivos ocultos em servidores web.
+
+> **Aviso de Responsabilidade:** Este material é estritamente educacional. As técnicas de injeção de scripts e varredura de diretórios descritas aqui devem ser aplicadas exclusivamente em ambientes de laboratório isolados ou em plataformas que autorizem explicitamente a prática de testes de segurança (Bug Bounty, CTFs).
+
+---
+
+## 2. Preparação do Ambiente de Laboratório
+
+Para garantir que a prática seja realizada em um cenário diferente dos exemplos de sala de aula, utilizaremos a plataforma **DVWA (Damn Vulnerable Web App)**. O DVWA é uma aplicação web em PHP/MySQL projetada especificamente para ser vulnerável, permitindo a prática legal de técnicas de segurança.
+
+### 2.1. Configuração da Máquina Atacante (Kali Linux)
+
+A máquina atacante será utilizada para interagir com a aplicação alvo e executar a ferramenta DIRB.
+
+1. Abra o terminal no Kali Linux.
+2. Atualize o sistema e verifique se o DIRB está instalado (geralmente é nativo no Kali):
+   ```bash
+   sudo apt-get update
+   sudo apt install dirb
+   ```
+
+### 2.2. Configuração da Máquina Alvo (DVWA via Docker)
+
+Utilizaremos o Docker para provisionar rapidamente a aplicação vulnerável.
+
+1. Na sua máquina (ou VM dedicada), execute o comando para baixar e iniciar o contêiner do DVWA:
+   ```bash
+   docker run -d -p 80:80 vulnerables/web-dvwa
+   ```
+2. Acesse a aplicação no navegador através do endereço: `http://localhost` (ou o IP da máquina onde o Docker está rodando).
+3. As credenciais padrão para login no DVWA são:
+   * **Username:** `admin`
+   * **Password:** `password`
+4. Após o login, você será redirecionado para a página `setup.php`. Clique no botão **"Create / Reset Database"** para inicializar o banco de dados. Você será deslogado e precisará fazer login novamente.
+5. No menu lateral esquerdo, vá em **"DVWA Security"** e altere o nível de segurança para **"Low"** (Baixo). Clique em **"Submit"**.
+
+---
+
+## 3. Prática 1: Exploração de Cross-Site Scripting (XSS)
+
+O XSS ocorre quando a aplicação web inclui dados não confiáveis fornecidos pelo usuário em uma página web sem a devida validação ou codificação (encoding), permitindo a execução de scripts no navegador da vítima.
+
+### 3.1. Identificando e Explorando XSS Refletido
+
+O XSS Refletido é aquele em que o payload malicioso é enviado na requisição (geralmente via URL) e refletido imediatamente na resposta do servidor.
+
+1. No menu lateral do DVWA, clique em **"XSS (Reflected)"**.
+2. A página apresenta um formulário simples perguntando *"What's your name?"*.
+3. No campo de texto, insira um nome comum, como `João`, e clique em **Submit**.
+   * Observe que a aplicação responde com `Hello João` e a URL muda para algo como `?name=João#`.
+4. Agora, vamos testar se o campo é vulnerável à injeção de HTML/JavaScript. Insira o seguinte payload de teste:
+   ```html
+   <script>alert('Vulnerabilidade XSS Confirmada!')</script>
+   ```
+5. Clique em **Submit**.
+
+**Resultado Esperado:**
+O navegador executará o código JavaScript inserido, exibindo uma caixa de diálogo (alerta) com a mensagem "Vulnerabilidade XSS Confirmada!". Isso comprova que a entrada não foi sanitizada.
+
+### 3.2. Explorando o Impacto: Captura de Cookies
+
+Para demonstrar o risco real do XSS, vamos capturar o cookie de sessão.
+
+1. Ainda na página **"XSS (Reflected)"**, insira o seguinte payload:
+   ```html
+   <script>alert(document.cookie)</script>
+   ```
+2. Clique em **Submit**.
+
+**Resultado Esperado:**
+O alerta exibirá o valor do cookie `PHPSESSID` (e possivelmente o cookie `security=low`). Em um cenário de ataque real, o atacante poderia enviar esse cookie para um servidor sob seu controle, permitindo o roubo da sessão (Session Hijacking).
+
+---
+
+## 4. Prática 2: Enumeração de Diretórios com DIRB
+
+O DIRB é um scanner de conteúdo web que funciona através de ataques baseados em dicionário. Ele envia requisições HTTP para diversas rotas possíveis (ex: `/admin`, `/backup`, `/config.php`) e analisa o código de status da resposta para identificar arquivos e diretórios existentes, mesmo que não haja links apontando para eles.
+
+### 4.1. Executando uma Varredura Básica
+
+Vamos utilizar o DIRB para descobrir a estrutura de diretórios do nosso servidor DVWA.
+
+1. No terminal do Kali Linux, execute o comando básico do DIRB apontando para o IP do alvo:
+   ```bash
+   dirb http://localhost/
+   ```
+   *(Nota: Se o DVWA estiver rodando em outra máquina, substitua `localhost` pelo IP correspondente, ex: `http://192.168.1.100/`)*
+
+2. O DIRB iniciará a varredura utilizando sua wordlist padrão (`/usr/share/dirb/wordlists/common.txt`).
+
+**Saída Esperada (Exemplo Parcial):**
+```text
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
+
+START_TIME: Tue May 27 10:00:00 2026
+URL_BASE: http://localhost/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+-----------------
+
+GENERATED WORDS: 4612
+
+---- Scanning URL: http://localhost/ ----
+==> DIRECTORY: http://localhost/about/
+==> DIRECTORY: http://localhost/config/
++ http://localhost/config.inc.php (CODE:200|SIZE:0)
+==> DIRECTORY: http://localhost/docs/
+==> DIRECTORY: http://localhost/external/
++ http://localhost/index.php (CODE:302|SIZE:0)
++ http://localhost/login.php (CODE:200|SIZE:1560)
+==> DIRECTORY: http://localhost/vulnerabilities/
+
+-----------------
+END_TIME: Tue May 27 10:01:30 2026
+DOWNLOADED_BYTES: 1450000
+```
+
+### 4.2. Analisando os Resultados
+
+Observe a saída do DIRB:
+* **`==> DIRECTORY:`** Indica que o DIRB encontrou um diretório (ex: `/config/`, `/docs/`).
+* **`+ http://... (CODE:200)`** Indica que um arquivo foi encontrado e está acessível.
+* **`+ http://... (CODE:302)`** Indica um redirecionamento.
+* **`+ http://... (CODE:403)`** Indica acesso proibido, mas confirma que o recurso existe.
+
+**Ação:**
+Abra o navegador e tente acessar manualmente alguns dos diretórios encontrados, como `http://localhost/docs/` ou `http://localhost/config/`, para verificar se há exposição de informações sensíveis (Directory Listing).
+
+---
+
+*** Parabéns por ter encerrado mais uma prática!!!***
+| **Uso da Ferramenta DIRB** | 35% | Execução correta do scanner e identificação bem-sucedida da estrutura de diretórios do alvo. |
+| **Análise de Mitigação** | 30% | Qualidade e precisão técnica das recomendações de segurança propostas para ambas as vulnerabilidades. |
