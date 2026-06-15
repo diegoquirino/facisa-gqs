@@ -1,6 +1,6 @@
 # Roteiro Prático: Demonstração de Vulnerabilidades Web com Burp Suite
 
-Arquivo com o código do aplicativo inseguro de exemplo: [TaskManager](./burp-demo-app.zip)
+Arquivo com o código do aplicativo inseguro de exemplo: [TaskManager](https://github.com/diegoquirino/facisa-gqs/blob/main/seg-inf/burp-demo-app.zip)
 
 ## Índice
 
