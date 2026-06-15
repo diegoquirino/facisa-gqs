@@ -140,7 +140,7 @@ Você deverá ver a página de login da aplicação TaskManager.
 
 ---
 
-## Opção 1: Usar Docker Compose (Recomendado)
+## Opção 2: Usar Docker Compose (Recomendado)
 
 Docker Compose simplifica o gerenciamento de containers e é a forma recomendada de executar a aplicação.
 
