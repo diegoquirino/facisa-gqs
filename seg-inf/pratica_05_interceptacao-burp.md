@@ -52,6 +52,8 @@ Antes de iniciar este roteiro, certifique-se de que possui:
 - **Firefox ou Chrome** para navegação web
 - **Conhecimento básico** de HTTP, HTML e JavaScript
 - **Acesso a um terminal/console** para executar comandos
+- **Docker** instalado (versão 20.10+) (Se não tiver Docker instalado, baixe em: https://www.docker.com/products/docker-desktop)
+- **Docker Compose** instalado (versão 1.29+)
 
 ### Verificar Instalações
 
@@ -64,6 +66,12 @@ npm --version
 
 # Ou verificar pnpm
 pnpm --version
+
+# Verificar Docker
+docker --version
+
+# Verificar Docker Compose
+docker-compose --version
 ```
 
 ---
@@ -129,6 +137,114 @@ http://localhost:3000
 ```
 
 Você deverá ver a página de login da aplicação TaskManager.
+
+---
+
+## Opção 1: Usar Docker Compose (Recomendado)
+
+Docker Compose simplifica o gerenciamento de containers e é a forma recomendada de executar a aplicação.
+
+### Passo 1: Iniciar a Aplicação
+
+```bash
+# Navegar até o diretório da aplicação
+cd burp-demo-app
+
+# Iniciar o container
+docker-compose up -d
+```
+
+A flag `-d` executa o container em background (detached mode).
+
+### Passo 2: Verificar o Status
+
+```bash
+# Ver status dos containers
+docker-compose ps
+
+# Ver logs da aplicação
+docker-compose logs -f taskmanager
+```
+
+Você deverá ver uma saída similar a:
+
+```
+🚀 Servidor rodando em http://localhost:3000/
+
+📝 Credenciais de teste:
+   Usuário: admin / Senha: admin123
+   Usuário: user / Senha: user123
+
+⚠️  AVISO: Esta aplicação é INTENCIONALMENTE VULNERÁVEL para fins educacionais!
+```
+
+### Passo 3: Acessar a Aplicação
+
+Abra seu navegador e acesse:
+
+```
+http://localhost:3000
+```
+
+### Passo 4: Parar a Aplicação
+
+```bash
+# Parar os containers
+docker-compose stop
+
+# Remover os containers
+docker-compose down
+
+# Remover containers e volumes
+docker-compose down -v
+```
+
+---
+
+## Opção 3: Usar Docker Diretamente
+
+Se preferir usar Docker sem Docker Compose:
+
+### Passo 1: Build da Imagem
+
+```bash
+# Navegar até o diretório da aplicação
+cd burp-demo-app
+
+# Build da imagem Docker
+docker build -t burp-demo-app:latest .
+```
+
+### Passo 2: Executar o Container
+
+```bash
+# Executar o container
+docker run -d \
+  --name burp-demo-app \
+  -p 3000:3000 \
+  -e NODE_ENV=production \
+  burp-demo-app:latest
+```
+
+### Passo 3: Verificar o Status
+
+```bash
+# Ver containers em execução
+docker ps
+
+# Ver logs do container
+docker logs -f burp-demo-app
+```
+
+### Passo 4: Parar o Container
+
+```bash
+# Parar o container
+docker stop burp-demo-app
+
+# Remover o container
+docker rm burp-demo-app
+```
 
 ---
 
